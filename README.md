@@ -2,7 +2,7 @@
 
 Tic Tac Toe
 
-<img src="tictactoe_logo.png">
+<img src="image/tictactoe_logo.png">
 
 The modules in the requirements.txt file are installed by issuing the following command in the terminal.
 
