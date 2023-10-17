@@ -83,11 +83,11 @@ class TicTacToe():
 
             self.char = {1: 'X', 2: 'O'}[choose]
 
-            self.matrix = [
-                [self.create_button(0, 0), self.create_button(0, 1), self.create_button(0, 2)],
-                [self.create_button(1, 0), self.create_button(1, 1), self.create_button(1, 2)],
-                [self.create_button(2, 0), self.create_button(2, 1), self.create_button(2, 2)]
-            ]
+            for i in range(self.size):
+                arr = []
+                for j in range(self.size):
+                    arr += [self.create_button(i, j)]
+                self.matrix += [arr]
 
             self.run()
 
@@ -147,25 +147,27 @@ class TicTacToe():
         self.counter += 1
         self.res_char = pos_char
 
+        check = True
+
         if 'col' in res:
             for i in range(self.size):
                 self.matrix[i][res['col']].configure(fg_color="red")
-            self.block_cells()
         elif 'row' in res:
             for i in range(self.size):
                 self.matrix[res['row']][i].configure(fg_color="red")
-            self.block_cells()
         elif 'ldig' in res:
             for i in range(self.size):
                 self.matrix[i][i].configure(fg_color="red")
-            self.block_cells()
         elif 'rdig' in res:
             for i in range(self.size):
                 self.matrix[i][self.size - 1 - i].configure(fg_color="red")
             self.res_char = pos_char1
-            self.block_cells()
         elif self.counter == 9:
             self.res_char = 'D'
+        else:
+            check = False
+
+        if check:
             self.block_cells()
 
     def block_cells(self):
