@@ -11,6 +11,7 @@ class TicTacToe():
         self.width = self.size * 100 + (self.size + 1) * 10
         self.height = self.size * 100 + (self.size + 1) * 10
         self.matrix = []
+        self.matrix_image = []
         self.frame = ctk.CTkFrame(self.root, self.width, self.height)
         self.frame.pack(pady=5)
         self.run()
@@ -87,7 +88,9 @@ class TicTacToe():
                 arr = []
                 for j in range(self.size):
                     arr += [self.create_button(i, j)]
-                self.matrix += [arr]
+                self.matrix_image += [arr]
+            self.matrix = [["" for i in range(self.size)] for j in range(self.size)]
+
 
             self.run()
 
@@ -104,36 +107,37 @@ class TicTacToe():
         return btn
 
     def validation(self, r, c):
-        self.matrix[r][c].configure(text='O' if self.counter & 1 else 'X', state=tk.DISABLED)
+        self.matrix[r][c] = 'O' if self.counter & 1 else 'X'
+        self.matrix_image[r][c].configure(image=tk.PhotoImage(file=("image/o.png" if self.counter & 1 else "image/cancel.png")), state=tk.DISABLED)
 
         res = {}
         pos_char = ''
 
         for i in range(self.size):
             cnt = 1
-            pos_char = self.matrix[i][0]._text
+            pos_char = self.matrix[i][0]
             for j in range(1, self.size):
-                if pos_char == self.matrix[i][j]._text and pos_char != "":
+                if pos_char == self.matrix[i][j] and pos_char != "":
                     cnt += 1
             if cnt == self.size:
                 res['row'] = i
 
         for i in range(self.size):
             cnt = 1
-            pos_char = self.matrix[0][i]._text
+            pos_char = self.matrix[0][i]
             for j in range(1, self.size):
-                if pos_char == self.matrix[j][i]._text and pos_char != "":
+                if pos_char == self.matrix[j][i] and pos_char != "":
                     cnt += 1
             if cnt == self.size:
                 res['col'] = i
 
         cnt = cnt1 = 1
-        pos_char1 = self.matrix[0][self.size - 1]._text
-        pos_char = self.matrix[0][0]._text
+        pos_char1 = self.matrix[0][self.size - 1]
+        pos_char = self.matrix[0][0]
         for i in range(1, self.size):
-            if pos_char == self.matrix[i][i]._text and pos_char != "":
+            if pos_char == self.matrix[i][i] and pos_char != "":
                 cnt += 1
-            if pos_char1 == self.matrix[i][self.size - 1 - i]._text and pos_char1 != "":
+            if pos_char1 == self.matrix[i][self.size - 1 - i] and pos_char1 != "":
                 cnt1 += 1
 
         res['player'] = pos_char
@@ -151,16 +155,16 @@ class TicTacToe():
 
         if 'col' in res:
             for i in range(self.size):
-                self.matrix[i][res['col']].configure(fg_color="red")
+                self.matrix_image[i][res['col']].configure(fg_color="red")
         elif 'row' in res:
             for i in range(self.size):
-                self.matrix[res['row']][i].configure(fg_color="red")
+                self.matrix_image[res['row']][i].configure(fg_color="red")
         elif 'ldig' in res:
             for i in range(self.size):
-                self.matrix[i][i].configure(fg_color="red")
+                self.matrix_image[i][i].configure(fg_color="red")
         elif 'rdig' in res:
             for i in range(self.size):
-                self.matrix[i][self.size - 1 - i].configure(fg_color="red")
+                self.matrix_image[i][self.size - 1 - i].configure(fg_color="red")
             self.res_char = pos_char1
         elif self.counter == 9:
             self.res_char = 'D'
@@ -174,7 +178,7 @@ class TicTacToe():
         messagebox.showinfo("Game over", f"{[self.fplayer_name, self.splayer_name][self.char != self.res_char].lower().title()} won the game" if self.res_char != 'D' else "Draw")
         for i in range(self.size):
             for j in range(self.size):
-                self.matrix[i][j].configure(state=tk.DISABLED)
+                self.matrix_image[i][j].configure(state=tk.DISABLED)
 
 
 
